@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
+
 apiVersion: v1
 data:
   POSTGRES_DB: postgresdb
@@ -29,7 +29,6 @@ metadata:
     team: ledger
     tier: db
   name: ledger-db-config
-  namespace: bank-of-anthos
 ---
 apiVersion: v1
 kind: Service
@@ -40,7 +39,6 @@ metadata:
     team: ledger
     tier: db
   name: ledger-db
-  namespace: bank-of-anthos
 spec:
   ports:
     - name: tcp
@@ -63,7 +61,6 @@ metadata:
     team: ledger
     tier: db
   name: ledger-db
-  namespace: bank-of-anthos
 spec:
   replicas: 1
   selector:
@@ -91,7 +88,7 @@ spec:
                 name: ledger-db-config
             - configMapRef:
                 name: demo-data-config
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/ledger-db:v0.6.2@sha256:abf589513b05769093862ed6faf405b0540cc4fb3c89a19e212842cb9acd04e4
+          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/ledger-db:v0.6.4@sha256:f30e64b9cc30b25beea6eda54ffef5e3fcba7af72a8dca78f05c81af378f4553
           name: postgres
           ports:
             - containerPort: 5432
@@ -106,6 +103,8 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: postgresdb
               subPath: postgres
+      serviceAccount: bank-of-anthos
+      serviceAccountName: default
       volumes:
         - emptyDir: {}
           name: postgresdb

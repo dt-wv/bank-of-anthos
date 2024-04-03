@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +21,6 @@ metadata:
     team: frontend
     tier: web
   name: frontend
-  namespace: bank-of-anthos
 spec:
   ports:
     - name: http
@@ -44,7 +43,6 @@ metadata:
     team: frontend
     tier: web
   name: frontend
-  namespace: bank-of-anthos
 spec:
   selector:
     matchLabels:
@@ -67,7 +65,7 @@ spec:
       containers:
         - env:
             - name: VERSION
-              value: v0.6.2
+              value: v0.6.4
             - name: PORT
               value: "8080"
             - name: ENABLE_TRACING
@@ -103,7 +101,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: service-api-config
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/frontend:v0.6.2@sha256:d7f4599ebb7ce3d8ac2573dcf6df5fb5e939e4e5d81d5288729dd4b0c242c64d
+          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/frontend:v0.6.4@sha256:f25db63509515fb6caf98c8c76e906f3c2868e345767d12565ab3750e52963f0
           livenessProbe:
             httpGet:
               path: /ready
@@ -144,6 +142,7 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
+      serviceAccountName: bank-of-anthos
       terminationGracePeriodSeconds: 5
       volumes:
         - emptyDir: {}

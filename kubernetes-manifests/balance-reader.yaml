@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +21,6 @@ metadata:
     team: ledger
     tier: backend
   name: balancereader
-  namespace: bank-of-anthos
 spec:
   ports:
     - name: http
@@ -44,7 +43,6 @@ metadata:
     team: ledger
     tier: backend
   name: balancereader
-  namespace: bank-of-anthos
 spec:
   selector:
     matchLabels:
@@ -67,13 +65,13 @@ spec:
       containers:
         - env:
             - name: VERSION
-              value: v0.6.2
+              value: v0.6.4
             - name: PORT
               value: "8080"
             - name: ENABLE_TRACING
-              value: "true"
+              value: "false"
             - name: ENABLE_METRICS
-              value: "true"
+              value: "false"
             - name: POLL_MS
               value: "100"
             - name: CACHE_SIZE
@@ -91,7 +89,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: ledger-db-config
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/balancereader:v0.6.2@sha256:1035844c88684b205e55c0038466fb9c015977f606acacb136ecfa2029085fe0
+          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/balancereader:v0.6.4@sha256:1e19d767c220d8296cc43483cb351f80bec19bfe55dff59bac18ab9687590d56
           livenessProbe:
             httpGet:
               path: /healthy
@@ -110,12 +108,12 @@ spec:
           resources:
             limits:
               cpu: 500m
-              ephemeral-storage: 0.5Gi
-              memory: 512Mi
+              ephemeral-storage: 1Gi
+              memory: 1024Mi
             requests:
               cpu: 100m
               ephemeral-storage: 0.5Gi
-              memory: 256Mi
+              memory: 500Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -140,6 +138,7 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
+      serviceAccountName: bank-of-anthos
       terminationGracePeriodSeconds: 5
       volumes:
         - emptyDir: {}

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ metadata:
     team: loadgenerator
     tier: test
   name: loadgenerator
-  namespace: bank-of-anthos
 spec:
   replicas: 1
   selector:
@@ -47,7 +46,7 @@ spec:
               value: "5"
             - name: LOG_LEVEL
               value: error
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/loadgenerator:v0.6.2@sha256:8982f3569bc7d1de97aee3be388b4d7eee076c5c9640c2be6bc3d4a58a9898d4
+          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/loadgenerator:v0.6.4@sha256:ace9a24d816c61756d82f7d67f9cfd0ebcff54e25052fb5a2185f4c05637baa0
           name: loadgenerator
           resources:
             limits:
@@ -69,4 +68,5 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
-      terminationGracePeriodSeconds: 5
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5ls -l

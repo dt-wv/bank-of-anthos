@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +21,6 @@ metadata:
     team: ledger
     tier: backend
   name: transactionhistory
-  namespace: bank-of-anthos
 spec:
   ports:
     - name: http
@@ -44,7 +43,6 @@ metadata:
     team: ledger
     tier: backend
   name: transactionhistory
-  namespace: bank-of-anthos
 spec:
   selector:
     matchLabels:
@@ -67,7 +65,7 @@ spec:
       containers:
         - env:
             - name: VERSION
-              value: v0.6.2
+              value: v0.6.4
             - name: PORT
               value: "8080"
             - name: ENABLE_TRACING
@@ -95,7 +93,7 @@ spec:
                 name: environment-config
             - configMapRef:
                 name: ledger-db-config
-          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/transactionhistory:v0.6.2@sha256:553869591f27efb035c981175cfd43c6904d0fec6b214080f0f61c65bb621898
+          image: us-central1-docker.pkg.dev/bank-of-anthos-ci/bank-of-anthos/transactionhistory:v0.6.4@sha256:6493c1d12ca8c947eede704016053a41f9da9b70397f00b2ee7d74b8c6586aa3
           livenessProbe:
             httpGet:
               path: /healthy
@@ -114,12 +112,12 @@ spec:
           resources:
             limits:
               cpu: 500m
-              ephemeral-storage: 0.5Gi
-              memory: 512Mi
+              ephemeral-storage: 1Gi
+              memory: 1024Mi
             requests:
               cpu: 100m
-              ephemeral-storage: 0.5Gi
-              memory: 256Mi
+              ephemeral-storage: 1Gi
+              memory: 500Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -144,6 +142,7 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
+      serviceAccountName: bank-of-anthos
       terminationGracePeriodSeconds: 5
       volumes:
         - emptyDir: {}
