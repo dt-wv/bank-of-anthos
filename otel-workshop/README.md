@@ -7,7 +7,7 @@
 - Access internet  
 - Dynatrace tenant with Admin rights (token creation,...)
 
-## Step 2 - Easytravel application deployment
+## Step 2 - Bank-of-Anthos application deployment
 `$ sudo su -`  
 `# sudo apt-get install -y git`  
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
@@ -32,14 +32,14 @@ note: please wait 2min until the cert-manager finishes installation
 `# curl –LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-dt-collector-deployment.yml`  
 `# vi otel-dt-collector-deployment.yml` (add environment-id and API-Token values)  
 `# kubectl create ns otel-backend`  
-`# kubectl apply -f otel-dt-collector-deployment.yaml`  
+`# kubectl apply -f otel-dt-collector-deployment.yml`  
 
 ## Step 6 - Install the Custom Resource Definition (CRD) for instrumentation
 `# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/instrumentation/instrumentation.yml`  
 `# sed -i 's/my-application-namespace/bank-of-anthos/g' instrumentation.yml`  
 `# kubectl apply -f instrumentation.yml`  
 
-## Step 7 - Patch the EasyTravel spec for auto-instrumentation    
+## Step 7 - Patch the Bank-of-Anthos spec for auto-instrumentation    
 (patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)  
 `# kubectl patch deployment balancereader -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
 `# kubectl patch deployment contacts -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
