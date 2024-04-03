@@ -8,10 +8,14 @@
 - Dynatrace tenant with Admin rights (token creation,...)
 
 ## Step 2 - Easytravel application deployment
-`$ sudo su -`  
-`# curl -LO https://raw.githubusercontent.com/dt-wv/easyTravel/main/k8s.yaml`   
-`# kubectl apply -f k8s.yaml`   
-`# sleep 120 && kubectl get pods -n easytravel`  
+`$ sudo su -`
+`# sudo apt-get install -y git`  
+`# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`
+`# cd bank-of-anthos`
+`# kubectl create ns bank-of-anthos`
+`# kubectl apply -f ./extra/jwt/` 
+`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos`   
+`# sleep 120 && kubectl get pods -n bank-of-anthos`  
 
 ## Step 3 - install [Cert manager](https://cert-manager.io/docs/installation/kubectl/)
 `# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml`  
@@ -25,29 +29,27 @@ note: please wait 2min until the cert-manager finishes installation
 `# kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml`  
 
 ## Step 5 - Opentelemetry Collector installation
-`# curl –LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-collector-deployment.yml > otel-collector-deployment.yaml`  
-`# vi otel-collector-deployment.yaml` (add environment-id and API-Token values)    
+`# curl –LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-dt-collector-deployment.yml`  
+`# vi otel-dt-collector-deployment.yml` (add environment-id and API-Token values)    
 `# kubectl create ns otel-backend`  
-`# kubectl apply -f otel-collector-deployment.yaml`  
+`# kubectl apply -f otel-dt-collector-deployment.yaml`  
 
 ## Step 6 - Install the Custom Resource Definition (CRD) for instrumentation
 `# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/instrumentation/instrumentation.yml`  
-`# sed -i 's/my-application-namespace/easytravel/g' instrumentation.yml`  
+`# sed -i 's/my-application-namespace/bank-of-anthos/g' instrumentation.yml`  
 `# kubectl apply -f instrumentation.yml` 
 
 ## Step 7 - Patch the EasyTravel spec for auto-instrumentation    
 (patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)  
-`# kubectl patch deployment easytravel-backend -n easytravel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'
-`  
-`# kubectl patch deployment easytravel-frontend -n easytravel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'
-`  
-`# kubectl patch deployment easytravel-angular-frontend -n easytravel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'
-`  
-`# kubectl rollout restart deployment -n easytravel easytravel-backend`  
-`# kubectl rollout restart deployment -n easytravel easytravel-frontend`  
-`# kubectl rollout restart deployment -n easytravel easytravel-angular-frontend`    
+`# kubectl patch deployment balancereader -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`
+`# kubectl patch deployment contacts -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`
+`# kubectl patch deployment frontend -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`
+`# kubectl patch deployment ledgerwriter -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`
+`# kubectl patch deployment transactionhistory -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`
+`# for i in $(kubectl get deployments -n bank-of-anthos | awk '${print $1}');do kubectl rollout restart deployment -n bank-of-anthos $i;done`  
 ### verify patch has been applied
-`# kubectl describe -n easytravel deployment easytravel-backend `
+`# kubectl describe -n bank-of-anthos deployment `
 
 ## Step 8 - verify in Dynatrace - Distributed traces -> ingested traces
 ### Troubleshooting
