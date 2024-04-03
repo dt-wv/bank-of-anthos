@@ -13,8 +13,8 @@
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
 `# cd bank-of-anthos`  
 `# kubectl create ns bank-of-anthos`  
-`# kubectl apply -f ./extra/jwt/`  
-`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos` 
+`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos`  
+`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos`  
 `# sleep 120 && kubectl get pods -n bank-of-anthos`  
 
 ## Step 3 - install [Cert manager](https://cert-manager.io/docs/installation/kubectl/)
