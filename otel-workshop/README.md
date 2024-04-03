@@ -41,11 +41,12 @@ note: please wait 2min until the cert-manager finishes installation
 
 ## Step 7 - Patch the Bank-of-Anthos spec for auto-instrumentation    
 (patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)  
-`# kubectl patch deployment balancereader -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment contacts -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment frontend -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment ledgerwriter -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment transactionhistory -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment balancereader -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment contacts -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
+`# kubectl patch deployment frontend -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
+`# kubectl patch deployment ledgerwriter -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment transactionhistory -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment userservice -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
 `# for i in $(kubectl get deployments -n bank-of-anthos | awk '${print $1}');do kubectl rollout restart deployment -n bank-of-anthos $i;done`  
 ### verify patch has been applied
 `# kubectl describe -n bank-of-anthos deployment`  
