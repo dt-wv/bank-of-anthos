@@ -9,7 +9,7 @@
 
 ## Step 2 - Bank-of-Anthos application deployment
 `$ sudo su -`  
-`# sudo apt-get install -y git`  
+`# apt-get install -y git`  
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
 `# cd bank-of-anthos`  
 `# kubectl create ns bank-of-anthos`  
