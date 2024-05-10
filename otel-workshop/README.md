@@ -47,7 +47,7 @@ note: please wait 2min until the cert-manager finishes installation
 `# kubectl patch deployment ledgerwriter -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
 `# kubectl patch deployment transactionhistory -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
 `# kubectl patch deployment userservice -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# for i in $(kubectl get deployments -n bank-of-anthos | awk '${print $1}');do kubectl rollout restart deployment -n bank-of-anthos $i;done`  
+`# for i in $(kubectl get deployments -n bank-of-anthos | awk '{print $1}');do kubectl rollout restart deployment -n bank-of-anthos $i;done`  
 ### verify patch has been applied
 `# kubectl describe -n bank-of-anthos deployment`  
 
