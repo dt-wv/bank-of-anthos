@@ -56,10 +56,10 @@ note: please wait 2min until the cert-manager finishes installation
 `# kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml`  
 
 ## Step 3 - Opentelemetry Collector installation
-`# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-dt-collector-deployment.yml`  
-`# vi otel-dt-collector-deployment.yml` (add environment-id and API-Token values. API-Token scopes: ingest logs, metrics, OpenTelemetry traces)  
+`# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-dt-collector-deployment-simple.yml`  
+`# vi otel-dt-collector-deployment-simple.yml` (add environment-id and API-Token values. API-Token scopes: ingest logs, metrics, OpenTelemetry traces)  
 `# kubectl create ns otel-backend`  
-`# kubectl apply -f otel-dt-collector-deployment.yml`  
+`# kubectl apply -f otel-dt-collector-deployment-simple.yml`  
 
 ## Step 4 - Install the Custom Resource Definition (CRD) for instrumentation
 `# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/instrumentation/instrumentation.yml`  
