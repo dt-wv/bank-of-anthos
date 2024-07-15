@@ -12,11 +12,10 @@
 `# apt-get install -y git`  
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
 `# cd bank-of-anthos`  
-`# kubectl create ns bank-of-anthos-oa`  
-`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos-oa`  
-`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos-oa`  
-`# sleep 120 && kubectl get pods -n bank-of-anthos-oa`  
-
+`# kubectl create ns bank-of-anthos`  
+`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos`  
+`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos`  
+`# sleep 120 && kubectl get pods -n bank-of-anthos`  
 
 ## Step 3 - install Dynatrace as ApplicationOnly
 `$ sudo su -`
@@ -30,17 +29,14 @@ On Step 2 take <b>without</b> CSI driver.
 <b>Data ingest token scopes:</b>  
 ![](img/dataingest_token_scopes.jpg)
 
-Dynakube can be downloaded and please replace the 'name' and 'apiurl' with the correct value.  
-`# curl -LO https://raw.githubusercontent.com/dt-wv/k8s/main/ApplicationMonitoring/dynakube-applicationMonitoring-generic-without-csi.yml`  
-`# vi dynakube-applicationMonitoring-generic-without-csi.yml`
+Dynakube can be downloaded and please replace the 'apiurl' with the correct value.  
+`# curl -LO https://raw.githubusercontent.com/dt-wv/k8s/main/ApplicationMonitoring/dynakube-applicationMonitoring-generic-without-csi.yml`     
 `# kubectl apply -f dynakube-applicationMonitoring-generic-without-csi.yml`
 
-## Step 4 - Modify the namespace (add the label of the namespaceselector used in the Dynakube)
+## Step 4 - Modify the namespace  
+`# kubectl patch ns bank-of-anthos -p '{"metadata":{"labels":{"instrumentation":"oneagent"}}}'`
 
-`# kubectl patch ns bank-of-anthos-oa -p '{"metadata":{"labels":{"instrumentation":"oneagent"}}}'`  
-or
-`# kubectl edit ns bank-of-anthos-oa`
 ## step 5 - restart the deployments
-`# for i in $(kubectl get deployments -n bank-of-anthos-oa | awk '{print $1}'); do kubectl rollout restart deployment -n bank-of-anthos-oa $1; done`
+`# for i in $(kubectl get deployments -n bank-of-anthos | awk '{print $1}'); do kubectl rollout restart deployment -n bank-of-anthos $1; done`
 
 

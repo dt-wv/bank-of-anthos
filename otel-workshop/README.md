@@ -1,4 +1,4 @@
-# Open Telemetry K8s workshop
+# Open Telemetry K8s workshop - Bank of Anthos
 
 ## Step 1 - Prerequisites
 - Hypervisor installation (VMWare, Hyper-V, Qemu,...)
@@ -12,9 +12,9 @@
 `# apt-get install -y git`  
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
 `# cd bank-of-anthos`  
-`# kubectl create ns bank-of-anthos`  
-`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos`  
-`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos`  
+`# kubectl create ns bank-of-anthos-otel`  
+`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos-otel`  
+`# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos-otel`  
 `# sleep 120 && kubectl get pods -n bank-of-anthos`  
 
 ## Step 3 - install [Cert manager](https://cert-manager.io/docs/installation/kubectl/)
@@ -41,15 +41,15 @@ note: please wait 2min until the cert-manager finishes installation
 
 ## Step 7 - Patch the Bank-of-Anthos spec for auto-instrumentation    
 (patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)  
-`# kubectl patch deployment balancereader -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment contacts -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment frontend -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment ledgerwriter -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment transactionhistory -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment userservice -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# for i in $(kubectl get deployments -n bank-of-anthos | awk '{print $1}');do kubectl rollout restart deployment -n bank-of-anthos $i;done`  
+`# kubectl patch deployment balancereader -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment contacts -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
+`# kubectl patch deployment frontend -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
+`# kubectl patch deployment ledgerwriter -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment transactionhistory -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment userservice -n bank-of-anthos-otel -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
+`# for i in $(kubectl get deployments -n bank-of-anthos-otel | awk '{print $1}');do kubectl rollout restart deployment -n bank-of-anthos-otel $i;done`  
 ### verify patch has been applied
-`# kubectl describe -n bank-of-anthos deployment`  
+`# kubectl describe -n bank-of-anthos-otel deployment`  
 
 ## Step 8 - verify in Dynatrace - Distributed traces -> ingested traces
 ### Troubleshooting
