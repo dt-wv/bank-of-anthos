@@ -30,7 +30,7 @@ note: please wait 2min until the cert-manager finishes installation
 
 ## Step 5 - Opentelemetry Collector installation
 `# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/collector/otel-dt-collector-deployment.yml`  
-`# vi otel-dt-collector-deployment.yml` (add environment-id and API-Token values)  
+`# vi otel-dt-collector-deployment.yml` (add environment-id and API-Token values. API-Token scopes: ingest logs, metrics, OpenTelemetry traces)  
 `# kubectl create ns otel-backend`  
 `# kubectl apply -f otel-dt-collector-deployment.yml`  
 
