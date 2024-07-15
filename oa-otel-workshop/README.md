@@ -66,13 +66,10 @@ note: please wait 2min until the cert-manager finishes installation
 `# sed -i 's/my-application-namespace/bank-of-anthos/g' instrumentation.yml`  
 `# kubectl apply -f instrumentation.yml`  
 
-## Step 5 - Patch the Bank-of-Anthos spec for auto-instrumentation    
-(patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)  
-`# kubectl patch deployment balancereader -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+## Step 5 - Patch the Bank-of-Anthos spec for auto-instrumentation where the OneAgent doesnt support instrumentation   
+(patching is required to add the auto-instrumentation annotations to the pod specs where the technology supports it)   
 `# kubectl patch deployment contacts -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment frontend -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
-`# kubectl patch deployment ledgerwriter -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
-`# kubectl patch deployment transactionhistory -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-java":"true"}}}} }'`  
+`# kubectl patch deployment frontend -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`   
 `# kubectl patch deployment userservice -n bank-of-anthos -p '{"spec": {"template":{"metadata":{"annotations":{"instrumentation.opentelemetry.io/inject-python":"true"}}}} }'`  
 `# for i in $(kubectl get deployments -n bank-of-anthos | awk '{print $1}');do kubectl rollout restart deployment -n bank-of-anthos-otel $i;done`  
 ### verify patch has been applied
