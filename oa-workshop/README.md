@@ -32,13 +32,13 @@ On Step 2 take <b>without</b> CSI driver.
 
 Dynakube can be downloaded and please replace the 'name' and 'apiurl' with the correct value.  
 `# curl -LO https://raw.githubusercontent.com/dt-wv/k8s/main/ApplicationMonitoring/dynakube-applicationMonitoring-generic-without-csi.yml`  
-`# vi dynakube-applicationMonitoring-generic-without-csi.yml`
+`# vi dynakube-applicationMonitoring-generic-without-csi.yml`  
 `# kubectl apply -f dynakube-applicationMonitoring-generic-without-csi.yml`
 
 ## Step 4 - Modify the namespace (add the label of the namespaceselector used in the Dynakube)
 
 `# kubectl patch ns bank-of-anthos-oa -p '{"metadata":{"labels":{"instrumentation":"oneagent"}}}'`  
-or
+or  
 `# kubectl edit ns bank-of-anthos-oa`
 ## step 5 - restart the deployments
 `# for i in $(kubectl get deployments -n bank-of-anthos-oa | awk '{print $1}'); do kubectl rollout restart deployment -n bank-of-anthos-oa $1; done`
