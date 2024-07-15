@@ -15,7 +15,7 @@
 `# kubectl create ns bank-of-anthos-otel`  
 `# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos-otel`  
 `# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos-otel`  
-`# sleep 120 && kubectl get pods -n bank-of-anthos`  
+`# sleep 120 && kubectl get pods -n bank-of-anthos-otel`  
 
 ## Step 3 - install [Cert manager](https://cert-manager.io/docs/installation/kubectl/)
 `# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml`  
@@ -36,7 +36,7 @@ note: please wait 2min until the cert-manager finishes installation
 
 ## Step 6 - Install the Custom Resource Definition (CRD) for instrumentation
 `# curl -LO https://raw.githubusercontent.com/dt-wv/otel/main/instrumentation/instrumentation.yml`  
-`# sed -i 's/my-application-namespace/bank-of-anthos/g' instrumentation.yml`  
+`# sed -i 's/my-application-namespace/bank-of-anthos-otel/g' instrumentation.yml`  
 `# kubectl apply -f instrumentation.yml`  
 
 ## Step 7 - Patch the Bank-of-Anthos spec for auto-instrumentation    
