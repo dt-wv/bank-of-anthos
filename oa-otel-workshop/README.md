@@ -39,7 +39,7 @@ Dynakube can be downloaded and please replace the 'name' and 'apiurl' with the c
 ## Step 4 - Modify the namespace  
 `# kubectl patch ns bank-of-anthos -p '{"metadata":{"labels":{"instrumentation":"oneagent"}}}'`
 
-## step 5 - restart the deployments
+## Step 5 - Restart the deployments
 `# for i in $(kubectl get deployments -n bank-of-anthos | awk '{print $1}'); do kubectl rollout restart deployment -n bank-of-anthos $1; done`
 
 # OpenTelemetry
