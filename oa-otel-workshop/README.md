@@ -29,7 +29,7 @@ On Step 2 take <b>without</b> CSI driver.
 ![](img/operator_k8s_token_scopes.jpg)  
 
 <b>Data ingest token scopes:</b>  
-![](img/dataingest_token_scopes.jpg)  
+![](img/scopes_data_token.jpg)  
 
 Dynakube can be downloaded and please replace the 'name' and 'apiurl' with the correct value.  
 `# curl -LO https://raw.githubusercontent.com/dt-wv/k8s/main/ApplicationMonitoring/dynakube-applicationMonitoring-generic-without-csi.yml`  
