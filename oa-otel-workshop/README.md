@@ -15,7 +15,7 @@
 `# cd $HOME; git clone https://github.com/dt-wv/bank-of-anthos.git`  
 `# cd bank-of-anthos`  
 `# kubectl create ns bank-of-anthos`  
-`# kubectl apply -f ./extra/jwt/ --namespace=bank-of-anthos`  
+`# kubectl apply -f ./extras/jwt/ --namespace=bank-of-anthos`  
 `# kubectl apply -f ./kubernetes-manifests/ --namespace=bank-of-anthos`  
 `# sleep 120 && kubectl get pods -n bank-of-anthos`  
 
