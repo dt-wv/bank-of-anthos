@@ -69,4 +69,4 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       serviceAccountName: default
-      terminationGracePeriodSeconds: 5ls -l
+      terminationGracePeriodSeconds: 5
